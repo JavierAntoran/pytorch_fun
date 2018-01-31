@@ -1,0 +1,29 @@
+universe              = vanilla
+notification          = Never 
+getenv                = True
+#nice_user            = True
+request_cpus          = 1
+request_memory        = 2000 
+should_transfer_files = no
+
++ShortJob = TRUE
+
+universe              = vanilla
+notification          = Never 
+nice_user             = True
+getenv                = True
+request_cpus          = 1
+request_gpus          = 1
+request_memory        = 2000 
+should_transfer_files = no
+
+requirements = ( TARGET.Machine == "voz01.cps.unizar.es" ) || ( TARGET.Machine == "voz02.cps.unizar.es" )|| ( TARGET.Machine == "voz03.cps.unizar.es" )|| ( TARGET.Machine == "voz08.cps.unizar.es" )|| ( TARGET.Machine == "voz09.cps.unizar.es" )
+
+
+executable = /home/gtc/cadrete/usr/bin/python_theano_cuda
+arguments  = run1_train.py
+output     = .condor/run1_train.log
+error      = .condor/run1_train.err
+log        = .condor/run1_train.clog
+queue
+
