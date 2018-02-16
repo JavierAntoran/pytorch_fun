@@ -1,0 +1,22 @@
+
+universe              = vanilla
+notification          = Never 
+nice_user             = True
+getenv                = True
+request_cpus          = 1
+request_gpus          = 1
+request_memory        = 1000 
+should_transfer_files = no
+
+#requirements = ( TARGET.Machine == "voz01.cps.unizar.es" ) || ( TARGET.Machine == "voz02.cps.unizar.es" )|| ( TARGET.Machine == "voz03.cps.unizar.es" )|| ( TARGET.Machine == "voz08.cps.unizar.es" )|| ( TARGET.Machine == "voz09.cps.unizar.es" )
+
+#requirements = ( TARGET.Machine != "voz02.cps.unizar.es" ) && ( TARGET.Machine != "voz07.cps.unizar.es" ) 
+
+
+executable = /home/gtc/cadrete/usr/bin/python_cuda
+arguments  = run2_view_emb.py
+output     = .condor/run2_view_emb.log
+error      = .condor/run2_view_emb.err
+log        = .condor/run2_view_emb.clog
+queue
+

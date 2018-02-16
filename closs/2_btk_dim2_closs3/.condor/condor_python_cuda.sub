@@ -1,0 +1,22 @@
+
+universe              = vanilla
+notification          = Never 
+nice_user             = True
+getenv                = True
+request_cpus          = 1
+request_gpus          = 1
+request_memory        = 1000 
+should_transfer_files = no
+
+#requirements = ( TARGET.Machine == "voz01.cps.unizar.es" ) || ( TARGET.Machine == "voz02.cps.unizar.es" )|| ( TARGET.Machine == "voz03.cps.unizar.es" )|| ( TARGET.Machine == "voz08.cps.unizar.es" )|| ( TARGET.Machine == "voz09.cps.unizar.es" )
+
+#requirements = ( TARGET.Machine != "voz02.cps.unizar.es" ) && ( TARGET.Machine != "voz07.cps.unizar.es" ) 
+
+
+executable = /home/gtc/cadrete/usr/bin/python_cuda
+arguments  = condor_python_cuda
+output     = .condor/condor_python_cuda.log
+error      = .condor/condor_python_cuda.err
+log        = .condor/condor_python_cuda.clog
+queue
+
