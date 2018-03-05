@@ -50,7 +50,7 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batc
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
 
-use_gpu = False  # torch.cuda.is_available()
+use_cuda = torch.cuda.is_available()
 
 # Some cute plots of a batch
 # inputs, classes = next(iter(dataloaders['train']))
@@ -88,7 +88,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
                 inputs, labels = data
 
                 # wrap them in Variable
-                if use_gpu:
+                if use_cuda:
                     inputs = Variable(inputs.cuda())
                     labels = Variable(labels.cuda())
                 else:
@@ -143,7 +143,7 @@ params = model_zoo.load_url('https://s3.amazonaws.com/modelzoo-networks/wide-res
 net = my_wrn_transfer(params, 2)
 #
 
-if use_gpu:
+if use_cuda:
     net = net.cuda()
 
 criterion = nn.CrossEntropyLoss()
@@ -155,7 +155,7 @@ optimizer = optim.SGD(net.fc1.parameters(), lr=0.001, momentum=0.9)
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
 net = train_model(net, criterion, optimizer,
-                         exp_lr_scheduler, num_epochs=1)
+                         exp_lr_scheduler, num_epochs=4)
 
 # inputs = torch.randn(1,3,224,224)
 # y = net(Variable(inputs))
