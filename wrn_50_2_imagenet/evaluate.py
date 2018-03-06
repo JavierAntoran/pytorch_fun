@@ -23,7 +23,7 @@ from sys import argv
 # Import Data and transformations
 #################
 
-batch_size = 32
+batch_size = 64
 
 data_transforms = {
     'train': transforms.Compose([
@@ -92,20 +92,26 @@ def run_test(model):
     print('Testing complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
 
+    return preds, outputs
+
 #
 
-use_cuda = False #torch.cuda.is_available()  # torch.cuda.is_available()
+use_cuda = torch.cuda.is_available()
 #
 
 model_name = argv[1]
 
 params = model_zoo.load_url('https://s3.amazonaws.com/modelzoo-networks/wide-resnet-50-2-export-5ae25d50.pth')
 net = my_wrn_transfer(params, 2, use_cuda)
-#net.cuda()
-net.load_state_dict(torch.load(model_name, map_location=lambda storage, loc: storage))
-print('it works!!')
+if use_cuda:
+    net.cuda()
+    net.load_state_dict(torch.load(model_name))
+else:
+    net.load_state_dict(torch.load(model_name, map_location=lambda storage, loc: storage))
 
-run_test(net)
-#probs = F.softmax(vals, dim=1)
+print('load successful: evaluating')
+
+labels, outputs = run_test(net)
+probs = F.softmax(outputs, dim=1)
 
 

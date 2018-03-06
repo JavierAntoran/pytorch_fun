@@ -22,7 +22,7 @@ from define_model import my_wrn_transfer
 # Import Data and transformations
 #################
 
-batch_size = 128
+batch_size = 64
 
 data_transforms = {
     'train': transforms.Compose([
