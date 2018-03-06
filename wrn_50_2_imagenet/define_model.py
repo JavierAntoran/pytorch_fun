@@ -9,14 +9,17 @@ from torch.utils import model_zoo
 
 class my_wrn_transfer(nn.Module):
 
-    def __init__(self, params, N_out):
+    def __init__(self, params, N_out, cuda):
         super(my_wrn_transfer, self).__init__()
         self.params = params
         self.N_out = N_out
         # convert numpy arrays to torch Variables
         for k, v in sorted(self.params.items()):
             #print(k, tuple(v.shape))
-            self.params[k] = nn.Parameter(v, requires_grad=False)
+            if cuda:
+                self.params[k] = nn.Parameter(v.cuda(), requires_grad=False)
+            else: 
+                self.params[k] = nn.Parameter(v, requires_grad=False)
 
         # determine network size by parameters
         self.blocks = [sum([re.match('group%d.block\d+.conv0.weight' % j, k) is not None

@@ -22,7 +22,7 @@ from define_model import my_wrn_transfer
 # Import Data and transformations
 #################
 
-batch_size = 4
+batch_size = 128
 
 data_transforms = {
     'train': transforms.Compose([
@@ -39,7 +39,7 @@ data_transforms = {
     ]),
 }
 
-data_dir = 'hymenoptera_data'
+data_dir = 'dogscats'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
@@ -49,8 +49,6 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batc
 
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
-
-use_cuda = torch.cuda.is_available()
 
 # Some cute plots of a batch
 # inputs, classes = next(iter(dataloaders['train']))
@@ -139,8 +137,12 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
     return model
 
 #
+
+use_cuda = torch.cuda.is_available()  # torch.cuda.is_available()
+#
+#
 params = model_zoo.load_url('https://s3.amazonaws.com/modelzoo-networks/wide-resnet-50-2-export-5ae25d50.pth')
-net = my_wrn_transfer(params, 2)
+net = my_wrn_transfer(params, 2, use_cuda)
 #
 
 if use_cuda:
@@ -149,13 +151,13 @@ if use_cuda:
 criterion = nn.CrossEntropyLoss()
 
 # only optimize final layer -> unecesary in this case because of how model is imported
-optimizer = optim.SGD(net.fc1.parameters(), lr=0.001, momentum=0.9)
+optimizer = optim.SGD(net.fc1.parameters(), lr=0.01, momentum=0.9)
 
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
 net = train_model(net, criterion, optimizer,
-                         exp_lr_scheduler, num_epochs=4)
+                         exp_lr_scheduler, num_epochs=1)
 
 # inputs = torch.randn(1,3,224,224)
 # y = net(Variable(inputs))
