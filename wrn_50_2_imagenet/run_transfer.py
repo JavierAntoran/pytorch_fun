@@ -160,7 +160,7 @@ net = train_model(net, criterion, optimizer,
                          exp_lr_scheduler, num_epochs=1)
 
 save_name = 'testsave'
-torch.save(net, save_name + '.pt')
+torch.save(net.state_dict(), './' + save_name + '.dat')
 
 # inputs = torch.randn(1,3,224,224)
 # y = net(Variable(inputs))

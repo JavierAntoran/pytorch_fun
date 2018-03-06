@@ -57,7 +57,7 @@ def run_test(model):
     since = time.time()
 
     # Each epoch has a training and validation phase
-    phase = ['val']
+    phase = 'val'
 
     model.train(False)  # Set model to evaluate mode
 
@@ -94,20 +94,18 @@ def run_test(model):
 
 #
 
-use_cuda = torch.cuda.is_available()  # torch.cuda.is_available()
+use_cuda = False #torch.cuda.is_available()  # torch.cuda.is_available()
 #
 
 model_name = argv[1]
 
-if use_cuda:
-    net = torch.load(model_name)
-    net.cuda()
-    print("cuda enabled")
-else:
-    torch.load(model_name, map_location=lambda storage, location: 'cpu')
-    print("cuda disabled")
+params = model_zoo.load_url('https://s3.amazonaws.com/modelzoo-networks/wide-resnet-50-2-export-5ae25d50.pth')
+net = my_wrn_transfer(params, 2, use_cuda)
+#net.cuda()
+net.load_state_dict(torch.load(model_name, map_location=lambda storage, loc: storage))
+print('it works!!')
 
-label, vals = run_test(net)
-probs = F.softmax(vals, dim=1)
+run_test(net)
+#probs = F.softmax(vals, dim=1)
 
 
