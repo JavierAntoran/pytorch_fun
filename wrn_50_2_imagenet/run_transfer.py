@@ -159,6 +159,9 @@ exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 net = train_model(net, criterion, optimizer,
                          exp_lr_scheduler, num_epochs=1)
 
+save_name = 'testsave'
+torch.save(net, save_name + '.py')
+
 # inputs = torch.randn(1,3,224,224)
 # y = net(Variable(inputs))
 
