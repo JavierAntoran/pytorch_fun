@@ -73,7 +73,7 @@ class VAE(nn.Module):
 
 def BCE_KLD_cost(x, z, mu, sq_beta, y):
     BCE = F.binary_cross_entropy(x, y, size_average=False)
-    Nloss = nlgd(z, mu, sq_beta)
+    Nloss = 10 * nlgd(z, mu, sq_beta)
     #KLD = -0.5 * torch.sum(1 + logpsi - mu.pow(2) - logpsi.exp())   # https://arxiv.org/abs/1312.6114 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
     return BCE + Nloss #+ KLD
 
