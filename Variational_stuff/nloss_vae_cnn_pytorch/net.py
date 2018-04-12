@@ -73,7 +73,7 @@ class VAE(nn.Module):
 
 def BCE_KLD_cost(x, z, mu, sq_beta, y):
     BCE = F.binary_cross_entropy(x, y, size_average=False)
-    Nloss = 10 * nlgd(z, mu, sq_beta)
+    Nloss = 100 * nlgd(z, mu, sq_beta)
     #KLD = -0.5 * torch.sum(1 + logpsi - mu.pow(2) - logpsi.exp())   # https://arxiv.org/abs/1312.6114 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
     return BCE + Nloss #+ KLD
 
@@ -113,15 +113,18 @@ class Net(BaseNet):
         if use_cuda:
             mu = Variable(torch.zeros(x.shape[0], 20).cuda(), requires_grad=False)
             sq_betas = Variable(torch.ones(x.shape[0], 20).cuda(), requires_grad=False)
+            noise = Variable(torch.randn(x.shape[0], 20).cuda(), requires_grad=False)
         else:
             mu = Variable(torch.zeros(x.shape[0], 20), requires_grad=False)
             sq_betas = Variable(torch.ones(x.shape[0], 20), requires_grad=False)
+            noise = Variable(torch.randn(x.shape[0], 20), requires_grad=False)
 
         x, = to_variable(var=(x,), cuda=use_cuda)
         
         self.optimizer.zero_grad()
         out, z, _ = self.model(x)
 
+        z_noise = z + noise
         loss = self.J(out, z, mu, sq_betas, x)
 
         loss.backward()
