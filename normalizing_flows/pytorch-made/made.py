@@ -133,7 +133,7 @@ if __name__ == '__main__':
             loss = xtrhat[0,k]
             loss.backward()
             
-            depends = (xtr.grad[0].numpy() != 0).astype(np.uint8)
+            depends = (xtr.grad[0].data.numpy() != 0).astype(np.uint8)
             depends_ix = list(np.where(depends)[0])
             isok = k % nin not in depends_ix
             
