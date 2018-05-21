@@ -8,6 +8,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.autograd import Variable
 
 # ------------------------------------------------------------------------------
 
@@ -17,12 +18,13 @@ class MaskedLinear(nn.Linear):
     def __init__(self, in_features, out_features, bias=True):
         super(MaskedLinear, self).__init__(in_features, out_features, bias)
         self.register_buffer('mask', torch.ones(out_features, in_features))
+        # print(type(self.mask))
         
     def set_mask(self, mask):
-        self.mask.data.copy_(torch.from_numpy(mask.astype(np.uint8).T))
+        self.mask.copy_(torch.from_numpy(mask.astype(np.uint8).T))
         
     def forward(self, input):
-        return F.linear(input, self.mask * self.weight, self.bias)
+        return F.linear(input, Variable(self.mask) * self.weight, self.bias)
 
 class MADE(nn.Module):
     def __init__(self, nin, hidden_sizes, nout, num_masks=1, natural_ordering=False):

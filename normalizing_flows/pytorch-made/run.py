@@ -15,7 +15,12 @@ from made import MADE
 
 # ------------------------------------------------------------------------------
 def run_epoch(split, upto=None):
-    torch.set_grad_enabled(split=='train') # enable/disable grad for efficiency of forwarding test batches
+    # torch.set_grad_enabled(split=='train') # enable/disable grad for efficiency of forwarding test batches
+    # if split!='train':
+    #     torch.no_grad()
+    # elif split=='train':
+    #     torch.enable_grad()
+
     model.train() if split == 'train' else model.eval()
     nsamples = 1 if split == 'train' else args.samples
     x = xtr if split == 'train' else xte
@@ -40,7 +45,8 @@ def run_epoch(split, upto=None):
         
         # evaluate the binary cross entropy loss
         loss = F.binary_cross_entropy_with_logits(xbhat, xb, size_average=False) / B
-        lossf = loss.data.item()
+        # print(loss.data)
+        lossf = loss.cpu().data.numpy()
         lossfs.append(lossf)
         
         # backward/update
