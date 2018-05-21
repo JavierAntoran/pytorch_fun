@@ -26,6 +26,17 @@ class Net(object):
 
         return log_pz
 
+    def get_z(self, x, lgd=None, context=None):
+
+        x, = to_variable(var=(x,), cuda=self.cuda)
+
+        context = Variable(torch.FloatTensor(len(x), 1).zero_()) + 2.0
+        lgd = Variable(torch.FloatTensor(len(x)).zero_())
+
+        z, _, _ = self.model((x, lgd, context))
+
+        return z
+
     def fit(self, x):
         x, = to_variable(var=(x,), cuda=self.cuda)
 
