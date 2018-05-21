@@ -4,6 +4,8 @@ from __future__ import division
 """
 ## imports
 """
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from src.utils import *
 
@@ -72,4 +74,3 @@ plt.imshow(log_p.reshape(100, 100), extent=[-20, 20, -20, 20], origin='lower', c
 plt.contour(log_p.reshape(100, 100), 30, extent=[-20, 20, -20, 20], origin='lower', colors='white')
 plt.plot(X[:,0],X[:,1],'wo',markersize=2)
 plt.savefig('out/run1_fig4.png', dpi=300)
-plt.show()
