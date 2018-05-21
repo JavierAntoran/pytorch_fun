@@ -15,7 +15,7 @@ class MaskedLinear(nn.Linear):
     """ same as Linear except has a configurable mask on the weights """
     
     def __init__(self, in_features, out_features, bias=True):
-        super().__init__(in_features, out_features, bias)        
+        super(MaskedLinear, self).__init__(in_features, out_features, bias)
         self.register_buffer('mask', torch.ones(out_features, in_features))
         
     def set_mask(self, mask):
@@ -38,7 +38,7 @@ class MADE(nn.Module):
         natural_ordering: force natural ordering of dimensions, don't use random permutations
         """
         
-        super().__init__()
+        super(MADE, self).__init__()
         self.nin = nin
         self.nout = nout
         self.hidden_sizes = hidden_sizes
