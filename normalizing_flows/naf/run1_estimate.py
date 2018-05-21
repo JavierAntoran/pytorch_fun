@@ -74,3 +74,15 @@ plt.imshow(log_p.reshape(100, 100), extent=[-20, 20, -20, 20], origin='lower', c
 plt.contour(log_p.reshape(100, 100), 30, extent=[-20, 20, -20, 20], origin='lower', colors='white')
 plt.plot(X[:,0],X[:,1],'wo',markersize=2)
 plt.savefig('out/run1_fig4.png', dpi=300)
+
+"""
+## data transformation
+"""
+
+z1 = net.get_z(X1).data.numpy()
+z2 = net.get_z(X2).data.numpy()
+
+plt.figure()
+plt.plot(z1[:,0],z1[:,1],'o',markersize=2)
+plt.plot(z2[:,0],z2[:,1],'o',markersize=2)
+plt.savefig('out/run1_fig4.png', dpi=300)
