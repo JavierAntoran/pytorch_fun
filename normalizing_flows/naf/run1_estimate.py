@@ -65,8 +65,9 @@ plt.imshow(p.reshape(100, 100), extent=[-20, 20, -20, 20], origin='lower', cmap=
 plt.savefig('out/run1_fig2.png', dpi=300)
 
 plt.figure()
-plt.imshow(p.reshape(100, 100), extent=[-20, 20, -20, 20], origin='lower', cmap='jet')
+plt.imshow(p.reshape(100, 100), extent=[-10, 10, -10, 10], origin='lower', cmap='jet')
 plt.plot(X[:,0],X[:,1],'wo',markersize=1)
+plt.title('data points and learnt likelihood')
 plt.savefig('out/run1_fig3.png', dpi=300)
 
 plt.figure()
@@ -85,4 +86,5 @@ z2 = net.get_z(X2).data.numpy()
 plt.figure()
 plt.plot(z1[:,0],z1[:,1],'o',markersize=2)
 plt.plot(z2[:,0],z2[:,1],'o',markersize=2)
+plt.title('resulting disribution')
 plt.savefig('out/run1_fig5.png', dpi=300)
